@@ -31,7 +31,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         console.log(JSON.stringify(data, null, 2));
         console.log(data.results.length);
         return NextResponse.json(data);
-    } catch (err) {
+    } catch (err: unknown) {
         console.error(err);
         return NextResponse.json({error: "Internal Server Error"}, {status: 500});
     }

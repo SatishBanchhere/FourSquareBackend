@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
             })
             .exec();
         return NextResponse.json({fsqData, data: PlacesWithEvents}, {status: 200});
-    } catch (err) {
+    } catch (err: unknown) {
         console.error(err);
         return NextResponse.json({
             error: "Internal Server Error",
@@ -91,7 +91,7 @@ export async function PUT(req: NextRequest) {
         event.save();
         await Places.findOneAndUpdate({fsq_place_id}, { $addToSet: {events: event._id} }, { new: true});
         return NextResponse.json({success: true, event}, {status: 200});
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error(err);
         return NextResponse.json({error: `Internal Server Error`}, {status: 500});
     }
