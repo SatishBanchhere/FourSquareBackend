@@ -81,15 +81,14 @@ export async function PUT(req: NextRequest) {
             await place.save();
         }
 
-        const event = await Events.findOneAndUpdate({placeId: place._id}, {
+        const event = await Events.create({
             name,
             description,
             startDate,
             endDate,
             placeId: place._id,
-        }, {
-            new: true, upsert: true
         })
+        event.save();
         await Places.findOneAndUpdate({fsq_place_id}, { $addToSet: {events: event._id} }, { new: true});
         return NextResponse.json({success: true, event}, {status: 200});
     } catch (err: any) {

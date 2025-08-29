@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
             .sort({createdAt: 1})
             .exec();
         return NextResponse.json(chats);
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error(err);
         return NextResponse.json({error: "Internal Server Error"}, {status: 500});
     }
@@ -25,6 +25,7 @@ export async function PUT(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams;
     const eventId = searchParams.get("eventId");
     const body = await req.json();
+    const { name, profilePic, message } = body;
     const conn = await dbConnect();
     const {Chats, Events} = getModels(conn);
 
@@ -41,7 +42,7 @@ export async function PUT(req: NextRequest) {
     });
 
     return NextResponse.json(chat);
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error(err);
         return NextResponse.json({error: "Internal Server Error"}, {status: 500});
     }
